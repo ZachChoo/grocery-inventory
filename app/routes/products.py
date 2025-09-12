@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.models.product import Product
 from app.schemas.products import ProductCreate
@@ -19,3 +19,14 @@ def create_product(product_data: ProductCreate):
         session.add(new_product)
         session.commit()
         return {"message": "Product created!"}
+    
+@router.delete("/{upc}")
+def delete_product(upc: int):
+    with SessionLocal() as session:
+        product_to_delete = session.query(Product).filter(Product.upc == upc).first()
+        if product_to_delete:
+            session.delete(product_to_delete)
+            session.commit()
+            return {"message": "Product deleted!"}
+        else:
+            raise HTTPException(status_code=404, detail="Product not found!")

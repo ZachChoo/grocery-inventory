@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.models.sale import Sale
 from app.schemas.sales import SaleCreate
@@ -19,3 +19,14 @@ def create_sale(sale_data: SaleCreate):
         session.add(new_sale)
         session.commit()
         return {"message": "Sale created!"}
+    
+@router.delete("/{sale_id}")
+def delete_sale(sale_id: int):
+    with SessionLocal() as session:
+        sale_to_delete = session.query(Sale).filter(Sale.id == sale_id).first()
+        if sale_to_delete:
+            session.delete(sale_to_delete)
+            session.commit()
+            return {"message": "Sale deleted!"}
+        else:
+            raise HTTPException(status_code=404, detail="Sale not found!")

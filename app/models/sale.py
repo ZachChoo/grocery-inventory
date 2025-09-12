@@ -6,7 +6,7 @@ from app.database import Base
 class Sale(Base):
     __tablename__ = 'sales'
     id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
+    product_id = Column(Integer, ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
     #product_id = Column(Integer, nullable=False)
     sale_price = Column(Float, nullable=False)
     sale_start = Column(Date, nullable=False)
@@ -16,4 +16,3 @@ class Sale(Base):
         'Product',
         back_populates='sales'
         )
-    
