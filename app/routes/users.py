@@ -6,15 +6,24 @@ from app.models.user import User
 from app.schemas.users import UserCreate
 from app.database import SessionLocal
 from app.core.security import hash_password, verify_password, create_access_token, get_current_user
+from app.config import settings
+
 
 router = APIRouter()
 
-# get all users
+# get all users with pagination
 @router.get("/")
-def get_users():
+def get_users(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
+    if size > settings.MAX_PAGE_SIZE:
+            size = settings.MAX_PAGE_SIZE
     with SessionLocal() as session:
-        users = session.query(User).all()
-        return {"users": users}
+        skip = (page - 1) * size
+        users = session.query(User).offset(skip).limit(size).all()
+        return {
+            "users": users,
+            "page": page,
+            "size": size
+            }
 
 # create new user
 @router.post("/register")

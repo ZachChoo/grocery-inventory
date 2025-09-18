@@ -18,6 +18,10 @@ class Settings:
     API_DESCRIPTION: str = "A backend API for managing grocery store inventory"
     API_VERSION: str = "1.0.0"
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
+    
+    # Default Pagination
+    DEFAULT_PAGE_SIZE: int = int(os.getenv("DEFAULT_PAGE_SIZE", "100"))
+    MAX_PAGE_SIZE: int = int(os.getenv("MAX_PAGE_SIZE", "1000"))
 
 # Create a single settings instance
 settings = Settings()
