@@ -66,9 +66,16 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
         "token_type": "bearer"
     }
     
-# Delete a user by id. User must be logged in
+def require_role(required_role: str):
+    def role_checker(current_user: Annotated[User, Depends(get_current_user)]):
+        if current_user.role != required_role:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return current_user
+    return role_checker
+
+# Delete a user by id. User must be a manager
 @router.delete("/{user_id}")
-def delete_user(user_id: int, _: Annotated[User, Depends(get_current_user)]):
+def delete_user(user_id: int,  _: Annotated[User, Depends(require_role("manager"))]):
     with SessionLocal() as session:
         user_to_delete = session.query(User).filter(User.id == user_id).first()
         if user_to_delete:
