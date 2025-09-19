@@ -6,4 +6,5 @@ class ProductCreate(BaseModel):
     name: str
     quantity: int
     price: float
+    report_code: int
     reorder_threshold: int

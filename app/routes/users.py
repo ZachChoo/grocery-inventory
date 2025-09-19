@@ -5,9 +5,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.models.user import User
 from app.schemas.users import UserCreate
 from app.database import SessionLocal
-from app.core.security import hash_password, verify_password, create_access_token, require_role
+from app.core.security import hash_password, verify_password, create_access_token, require_role, get_current_user
 from app.config import settings
-
 
 router = APIRouter()
 
@@ -24,6 +23,15 @@ def get_users(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
             "page": page,
             "size": size
             }
+    
+# get info on currently authenticated user
+@router.get("/me")
+def get_current_user_info(current_user: Annotated[User, Depends(get_current_user)]):
+    return {
+        "id": current_user.id,
+        "username": current_user.username,
+        "role": current_user.role
+    }
 
 # create new user
 @router.post("/register")
@@ -65,8 +73,6 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
         "access_token": create_access_token({"sub": user.username}),
         "token_type": "bearer"
     }
-    
-
 
 # Delete a user by id. User must be a manager
 @router.delete("/{user_id}")
