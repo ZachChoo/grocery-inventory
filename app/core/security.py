@@ -53,3 +53,11 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         if user is None:
             raise credentials_exception
     return user
+
+# require special role for access
+def require_role(required_role: str):
+    def role_checker(current_user: Annotated[User, Depends(get_current_user)]):
+        if current_user.role != required_role:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return current_user
+    return role_checker

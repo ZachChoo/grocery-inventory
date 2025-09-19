@@ -5,7 +5,7 @@ from app.models.product import Product
 from app.models.user import User
 from app.schemas.products import ProductCreate
 from app.database import SessionLocal
-from app.core.security import get_current_user
+from app.core.security import get_current_user, require_role
 from app.config import settings
 
 router = APIRouter()
@@ -33,8 +33,9 @@ def create_product(product_data: ProductCreate, _: Annotated[User, Depends(get_c
         session.commit()
         return {"message": "Product created!"}
     
+# deletes a product. User must be a manager
 @router.delete("/{upc}")
-def delete_product(upc: int):
+def delete_product(upc: int, _: Annotated[User, Depends(require_role("manager"))]):
     with SessionLocal() as session:
         product_to_delete = session.query(Product).filter(Product.upc == upc).first()
         if product_to_delete:
