@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.models.user import User
 from app.schemas.users import UserCreate
 from app.database import SessionLocal
-from app.core.security import hash_password, verify_password, create_access_token, get_current_user
+from app.core.security import hash_password, verify_password, create_access_token, require_role
 from app.config import settings
 
 
@@ -66,12 +66,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
         "token_type": "bearer"
     }
     
-def require_role(required_role: str):
-    def role_checker(current_user: Annotated[User, Depends(get_current_user)]):
-        if current_user.role != required_role:
-            raise HTTPException(status_code=403, detail="Insufficient permissions")
-        return current_user
-    return role_checker
+
 
 # Delete a user by id. User must be a manager
 @router.delete("/{user_id}")
