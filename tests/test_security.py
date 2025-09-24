@@ -1,7 +1,5 @@
-import pytest
 import jwt
 from datetime import datetime, timedelta, timezone
-from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from app.core.security import (

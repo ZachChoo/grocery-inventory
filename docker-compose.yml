@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database container
+  db:
+    image: postgres:15
+    container_name: grocery_db
+    environment:
+      POSTGRES_DB: grocery_inventory
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persist database data
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker:/docker-entrypoint-initdb.d
+    healthcheck:
+      # Check if database is ready before starting app
+      test: ["CMD-SHELL", "pg_isready -U grocery_user -d grocery_inventory"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI application container  
+  web:
+    build: .  # Build from Dockerfile in current directory
+    container_name: grocery_app
+    ports:
+      - "8000:8000"  # Map port 8000 on machine to port 8000 in container
+    env_file: .env # environment variables for Docker
+    depends_on:
+      db:
+        condition: service_healthy  # Wait for database to be ready
+    volumes:
+      # Mount code for development
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Define named volumes for data persistence
+volumes:
+  postgres_data:

@@ -1,7 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
-from app.database import engine, Base
 
 client = TestClient(app)
 
@@ -49,14 +48,6 @@ def manager_user():
         "password": "managerpass123", 
         "role": "manager"
     }
-
-@pytest.fixture(autouse=True)
-def cleanup_db():
-    """Clean database before each test"""
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    yield
-
 
 class TestUserRegistration:
     
