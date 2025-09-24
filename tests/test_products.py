@@ -2,7 +2,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.database import engine, Base
 
 client = TestClient(app)
 
@@ -56,13 +55,6 @@ def sample_product():
         "report_code": 1234,
         "reorder_threshold": 10
     }
-
-@pytest.fixture(autouse=True)
-def cleanup_db():
-    """Clean database before each test"""
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    yield
 
 class TestGetProducts:    
     def test_get_products_no_auth_required(self):

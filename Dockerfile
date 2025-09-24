@@ -20,7 +20,7 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your application code
+# Copy the rest of the application code
 # Done after requirements to optimize Docker layer caching
 COPY . .
 
@@ -35,5 +35,5 @@ USER app
 EXPOSE 8000
 
 # Command to run when container starts
-# Use uvicorn to serve your FastAPI app
+# Use uvicorn to serve the FastAPI app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
