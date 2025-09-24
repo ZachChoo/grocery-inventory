@@ -49,7 +49,7 @@ def manager_token():
 def sample_product():
     """Sample product data for testing"""
     return {
-        "upc": "123",
+        "upc": 123,
         "name": "Test Product",
         "price": 9.99,
         "quantity": 50,

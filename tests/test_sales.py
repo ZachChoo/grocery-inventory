@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from datetime import date, timedelta
 from app.main import app
 from app.database import engine, Base
-
+import random
 
 client = TestClient(app)
 
@@ -37,7 +37,7 @@ class TestHelper:
     def create_test_product(auth_headers: dict):
         """Create a test product and return product data"""
         product_data = {
-            "upc": f"12345678901{len(str(hash('test')))}",  # Unique UPC
+            "upc": random.randint(0, 999_999_999),  # Unique UPC
             "name": "Test Product for Sales",
             "price": 19.99,
             "quantity": 100,

@@ -13,8 +13,6 @@ app = FastAPI(
     debug=settings.DEBUG
 )
 
-if settings.DEBUG:
-    Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
 app.include_router(products_router, prefix="/products", tags=["products"])
