@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   # PostgreSQL database container
   db:
     image: postgres:15
     container_name: grocery_db
     environment:
-      POSTGRES_DB: grocery_inventory
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
@@ -17,7 +15,7 @@ services:
       - ./docker:/docker-entrypoint-initdb.d
     healthcheck:
       # Check if database is ready before starting app
-      test: ["CMD-SHELL", "pg_isready -U grocery_user -d grocery_inventory"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 5s
       timeout: 5s
       retries: 5
