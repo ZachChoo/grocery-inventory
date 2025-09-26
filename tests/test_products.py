@@ -14,7 +14,7 @@ class TestHelper:
             "password": "testpassword",
             "role": role
         }
-        response = client.post("/users/register", json=user_data)
+        client.post("/users/register", json=user_data)
         return user_data
     
     @staticmethod
@@ -38,7 +38,7 @@ def employee_token():
     TestHelper.create_test_user("testemployee", "employee")
     return TestHelper.get_auth_token("testemployee")
 
-@pytest.fixture  
+@pytest.fixture
 def manager_token():
     """Create manager user and return auth token"""
     TestHelper.create_test_user("testmanager", "manager")
@@ -56,7 +56,7 @@ def sample_product():
         "reorder_threshold": 10
     }
 
-class TestGetProducts:    
+class TestGetProducts:
     def test_get_products_no_auth_required(self):
         """Test getting products (should work without authentication)"""
         response = client.get("/products/")
@@ -89,7 +89,7 @@ class TestGetProducts:
         del product["id"]
         assert product == sample_product
 
-class TestCreateProducts:    
+class TestCreateProducts:
     def test_create_product_requires_auth(self, sample_product):
         """Test creating product without authentication fails"""
         response = client.post("/products/", json=sample_product)
@@ -156,7 +156,7 @@ class TestDeleteProducts:
         assert response.status_code == 404  # Not Found
         assert response.json()["detail"] == "Product not found!"
 
-class TestGetHelloWorld:    
+class TestGetHelloWorld:
     def test_get_hello_world(self):
         """Test get from '/' for 100% coverage"""
         response = client.get("/")

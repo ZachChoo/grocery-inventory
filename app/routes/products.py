@@ -14,7 +14,7 @@ router = APIRouter()
 @router.get("/")
 def get_products(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
     if size > settings.MAX_PAGE_SIZE:
-            size = settings.MAX_PAGE_SIZE
+        size = settings.MAX_PAGE_SIZE
     with SessionLocal() as session:
         skip = (page - 1) * size
         products = session.query(Product).offset(skip).limit(size).all()
@@ -22,7 +22,7 @@ def get_products(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
             "products": products,
             "page": page,
             "size": size
-            }
+        }
     
 # Creates a product. User must be logged in
 @router.post("/")
@@ -33,7 +33,7 @@ def create_product(product_data: ProductCreate, _: Annotated[User, Depends(get_c
             session.add(new_product)
             session.commit()
             return {"message": "Product created!"}
-        except:
+        except Exception:
             raise HTTPException(status_code=400, detail="Invalid product")
         
 # deletes a product. User must be a manager

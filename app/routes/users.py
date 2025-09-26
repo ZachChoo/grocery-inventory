@@ -14,7 +14,7 @@ router = APIRouter()
 @router.get("/")
 def get_users(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
     if size > settings.MAX_PAGE_SIZE:
-            size = settings.MAX_PAGE_SIZE
+        size = settings.MAX_PAGE_SIZE
     with SessionLocal() as session:
         skip = (page - 1) * size
         users = session.query(User).offset(skip).limit(size).all()
@@ -22,7 +22,7 @@ def get_users(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
             "users": users,
             "page": page,
             "size": size
-            }
+        }
     
 # get info on currently authenticated user
 @router.get("/me")
@@ -76,7 +76,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
 # Delete a user by id. User must be a manager
 @router.delete("/{user_id}")
-def delete_user(user_id: int,  _: Annotated[User, Depends(require_role("manager"))]):
+def delete_user(user_id: int, _: Annotated[User, Depends(require_role("manager"))]):
     with SessionLocal() as session:
         user_to_delete = session.query(User).filter(User.id == user_id).first()
         if user_to_delete:

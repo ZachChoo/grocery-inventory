@@ -60,7 +60,7 @@ def employee_token():
     TestHelper.create_test_user("employee", "employee")
     return TestHelper.get_auth_token("employee")
 
-@pytest.fixture  
+@pytest.fixture
 def manager_token():
     """Create manager user and return auth token"""
     TestHelper.create_test_user("manager", "manager")
@@ -286,6 +286,6 @@ class TestCascadeDelete:
         assert delete_response.status_code == 200
         
         # Verify product still exists
-        product_check = client.get(f"/products/")
+        product_check = client.get("/products/")
         assert product_check.status_code == 200
         assert len(product_check.json()["products"]) > 0

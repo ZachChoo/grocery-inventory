@@ -45,7 +45,7 @@ def manager_user():
     """Sample manager user data"""
     return {
         "username": "testmanager",
-        "password": "managerpass123", 
+        "password": "managerpass123",
         "role": "manager"
     }
 
@@ -193,7 +193,7 @@ class TestDeleteUser:
         _, _ = TestHelper.create_test_user("deleteme", "employee")
             
         # Manager deletes the user
-        response = client.delete(f"/users/2", headers=manager_headers)
+        response = client.delete("/users/2", headers=manager_headers)
         
         assert response.status_code == 200
         assert response.json()["message"] == "User deleted!"

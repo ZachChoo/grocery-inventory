@@ -14,7 +14,7 @@ router = APIRouter()
 @router.get("/")
 def get_sales(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
     if size > settings.MAX_PAGE_SIZE:
-            size = settings.MAX_PAGE_SIZE
+        size = settings.MAX_PAGE_SIZE
     with SessionLocal() as session:
         skip = (page - 1) * size
         sales = session.query(Sale).offset(skip).limit(size).all()
@@ -22,7 +22,7 @@ def get_sales(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
             "sales": sales,
             "page": page,
             "size": size
-            }
+        }
     
 # creates a sale, must be logged in
 @router.post("/")
@@ -33,7 +33,7 @@ def create_sale(sale_data: SaleCreate, _: Annotated[User, Depends(get_current_us
             session.add(new_sale)
             session.commit()
             return {"message": "Sale created!"}
-        except:
+        except Exception:
             raise HTTPException(status_code=400, detail="Invalid sale")
     
 # deletes a sale, must be a manager
