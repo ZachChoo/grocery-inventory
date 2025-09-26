@@ -11,7 +11,4 @@ class Sale(Base):
     sale_start = Column(Date, nullable=False)
     sale_end = Column(Date, nullable=False)
 
-    product = relationship(
-        'Product',
-        back_populates='sales'
-        )
+    product = relationship('Product', back_populates='sales')

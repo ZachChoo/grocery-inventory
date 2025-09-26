@@ -3,11 +3,9 @@ from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
 
 from app.core.security import (
-    hash_password, 
-    verify_password, 
-    create_access_token, 
-    get_current_user,
-    require_role
+    hash_password,
+    verify_password,
+    create_access_token
 )
 from app.config import settings
 from app.main import app
@@ -40,7 +38,7 @@ class TestPasswordHashing:
         password = "testpassword123"
         hashed = hash_password(password)
         
-        assert verify_password(password, hashed) == True
+        assert verify_password(password, hashed)
     
     def test_verify_password_incorrect_password(self):
         """Test password verification with incorrect password"""
@@ -192,7 +190,7 @@ class TestRequireRole:
             "role": "employee"
         }
         manager_data = {
-            "username": "rolemanager", 
+            "username": "rolemanager",
             "password": "testpass123",
             "role": "manager"
         }

@@ -24,5 +24,6 @@ class Settings:
     DEFAULT_PAGE_SIZE: int = int(os.getenv("DEFAULT_PAGE_SIZE", "100"))
     MAX_PAGE_SIZE: int = int(os.getenv("MAX_PAGE_SIZE", "1000"))
 
+
 # Create a single settings instance
 settings = Settings()

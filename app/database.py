@@ -5,7 +5,7 @@ from app.config import settings
 
 engine = create_engine(settings.DATABASE_URL, echo=settings.DEBUG)
 
-# event listener to enable foreign key constraints, only needed for SQLite
+# event listener to enable foreign key constraints, only needed for SQLite implementations (will use postgre for prod)
 if settings.DATABASE_URL == "sqlite:///./grocery_inventory.db":
     @event.listens_for(engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):

@@ -1,12 +1,13 @@
-import os, sys
+import os
+import sys
+import pytest
+from sqlalchemy import create_engine
 
 # make sure the project root (grocery-inventory) is in sys.path, not test/
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-import pytest
-from sqlalchemy import create_engine
 from app.database import SessionLocal, Base
 from app.config import settings
 
