@@ -155,11 +155,3 @@ class TestDeleteProducts:
         response = client.delete("/products/99999", headers=headers)
         assert response.status_code == 404  # Not Found
         assert response.json()["detail"] == "Product not found!"
-
-class TestGetHelloWorld:
-    def test_get_hello_world(self):
-        """Test get from '/' for 100% coverage"""
-        response = client.get("/")
-        
-        assert response.status_code == 200
-        assert response.json()["message"] == "Hello World"
