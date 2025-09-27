@@ -100,7 +100,8 @@ class TestGetCurrentUser:
         user_data = {
             "username": "authtest",
             "password": "testpass123",
-            "role": "employee"
+            "role": "employee",
+            "email": "test@gmail.com"
         }
         client.post("/users/register", json=user_data)
     
@@ -187,12 +188,14 @@ class TestRequireRole:
         employee_data = {
             "username": "roleemployee",
             "password": "testpass123",
-            "role": "employee"
+            "role": "employee",
+            "email": "employee@gmail.com"
         }
         manager_data = {
             "username": "rolemanager",
             "password": "testpass123",
-            "role": "manager"
+            "role": "manager",
+            "email": "manager@gmail.com"
         }
         
         client.post("/users/register", json=employee_data)
@@ -240,7 +243,8 @@ class TestSecurityIntegration:
         user_data = {
             "username": "integrationtest",
             "password": "securepass123",
-            "role": "manager"
+            "role": "manager",
+            "email": "test@gmail.com"
         }
         reg_response = client.post("/users/register", json=user_data)
         assert reg_response.status_code == 200

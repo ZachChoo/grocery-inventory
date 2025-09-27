@@ -6,12 +6,13 @@ client = TestClient(app)
 
 class TestHelper:
     @staticmethod
-    def create_test_user(username: str, role: str = "employee"):
+    def create_test_user(username: str, role: str = "employee", email: str = "test@gmail.com"):
         """Create a test user and return their data"""
         user_data = {
             "username": username,
             "password": "testpassword123",
-            "role": role
+            "role": role,
+            "email": email
         }
         response = client.post("/users/register", json=user_data)
         return user_data, response
@@ -37,7 +38,8 @@ def sample_user():
     return {
         "username": "testuser",
         "password": "employeepass123",
-        "role": "employee"
+        "role": "employee",
+        "email": "employee@gmail.com"
     }
 
 @pytest.fixture
@@ -46,7 +48,8 @@ def manager_user():
     return {
         "username": "testmanager",
         "password": "managerpass123",
-        "role": "manager"
+        "role": "manager",
+        "email": "manager@gmail.com"
     }
 
 class TestUserRegistration:
@@ -185,12 +188,12 @@ class TestDeleteUser:
     def test_delete_user_as_manager(self):
         """Test that managers can delete users"""
         # Create a manager
-        _, _ = TestHelper.create_test_user("testmanager", "manager")
+        _, _ = TestHelper.create_test_user("testmanager", "manager", "manager@gmail.com")
         manager_token = TestHelper.get_auth_token("testmanager")
         manager_headers = TestHelper.auth_headers(manager_token)
         
         # Create a user to delete
-        _, _ = TestHelper.create_test_user("deleteme", "employee")
+        _, _ = TestHelper.create_test_user("deleteme", "employee", "employee@gmail.com")
             
         # Manager deletes the user
         response = client.delete("/users/2", headers=manager_headers)
