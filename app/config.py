@@ -27,9 +27,9 @@ class Settings:
     # Email Settings
     SMTP_SERVER: str = os.getenv("SMTP_SERVER", "smtp.gmail.com")
     SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
-    SMTP_USERNAME: str = os.getenv("email@gmail.com", "")
+    SMTP_USERNAME: str = os.getenv("SMTP_USERNAME", "")
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
-    FROM_EMAIL: str = os.getenv("email@gmail.com", "")
+    FROM_EMAIL: str = os.getenv("FROM_EMAIL", "")
 
 # Create a single settings instance
 settings = Settings()

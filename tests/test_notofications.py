@@ -74,7 +74,7 @@ def sample_sale(employee_token, sample_product):
     # Create sale ending tomorrow
     tomorrow = datetime.now().date() + timedelta(days=1)
     sale_data = {
-        "product_upc": sample_product["upc"],  # Assuming your API uses UPC
+        "product_id": 1,
         "sale_price": 7.99,
         "sale_start": datetime.now().date().isoformat(),
         "sale_end": tomorrow.isoformat()
@@ -83,12 +83,12 @@ def sample_sale(employee_token, sample_product):
     assert response.status_code == 200
     return sale_data
 
-'''
+
 class TestEmailNotifications:
     
     def test_manual_sale_check_endpoint_exists(self):
         """Test that the manual sale check endpoint exists"""
-        response = client.post("/admin/check-expiring-sales")
+        response = client.post("/admin/notify-sales")
         assert response.status_code == 200
         assert "message" in response.json()
     
@@ -99,7 +99,7 @@ class TestEmailNotifications:
         mock_email.return_value = True
         
         # Trigger the manual check
-        response = client.post("/admin/check-expiring-sales")
+        response = client.post("/admin/notify-sales")
         
         assert response.status_code == 200
         data = response.json()
@@ -117,7 +117,7 @@ class TestEmailNotifications:
     
     def test_manual_sale_check_no_expiring_sales(self, manager_token):
         """Test manual sale check with no expiring sales"""
-        response = client.post("/admin/check-expiring-sales")
+        response = client.post("/admin/notify-sales")
         
         assert response.status_code == 200
         data = response.json()
@@ -131,7 +131,7 @@ class TestEmailNotifications:
         # Only employee exists, no managers
         mock_email.return_value = True
         
-        response = client.post("/admin/check-expiring-sales")
+        response = client.post("/admin/notify-sales")
         
         assert response.status_code == 200
         data = response.json()
@@ -147,7 +147,7 @@ class TestEmailNotifications:
         """Test that email notifications include proper product details"""
         mock_email.return_value = True
         
-        response = client.post("/admin/check-expiring-sales")
+        response = client.post("/admin/notify-sales")
         assert response.status_code == 200
         
         # Verify email service was called with proper data
@@ -161,10 +161,9 @@ class TestEmailNotifications:
         # Check sales data
         sales_list = call_args[0][1]
         assert len(sales_list) == 1
-        
+
         # The sale should have product relationship loaded
+        tomorrow = datetime.now().date() + timedelta(days=1)
         sale = sales_list[0]
-        assert hasattr(sale, 'product')
-        assert sale.product.name == "Test Product"
-        assert sale.sale_price == 7.99
-'''
+        assert sale["product"]["name"] == "Test Product"
+        assert sale["sale_price"] == 7.99
