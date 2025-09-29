@@ -9,12 +9,13 @@ client = TestClient(app)
 
 class TestHelper:
     @staticmethod
-    def create_test_user(username: str, role: str = "employee"):
+    def create_test_user(username: str, role: str = "employee", email: str = "test@gmail.com"):
         """Create a test user and return their data"""
         user_data = {
             "username": username,
             "password": "testpassword123",
-            "role": role
+            "role": role,
+            "email": email
         }
         response = client.post("/users/register", json=user_data)
         return user_data, response
@@ -57,13 +58,13 @@ class TestHelper:
 @pytest.fixture
 def employee_token():
     """Create employee user and return auth token"""
-    TestHelper.create_test_user("employee", "employee")
+    TestHelper.create_test_user("employee", "employee", "employee@gmail.com")
     return TestHelper.get_auth_token("employee")
 
 @pytest.fixture
 def manager_token():
     """Create manager user and return auth token"""
-    TestHelper.create_test_user("manager", "manager")
+    TestHelper.create_test_user("manager", "manager", "manager@gmail.com")
     return TestHelper.get_auth_token("manager")
 
 @pytest.fixture
