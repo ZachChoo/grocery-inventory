@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+from datetime import datetime
 import atexit
-import datetime
 
 from app.services.notifications import notification_service
 
@@ -17,7 +17,7 @@ def start_scheduler():
     """Start daily notifications"""
     scheduler.add_job(
         func=daily_notification_check,
-        trigger=CronTrigger(hour=9, minute=0),
+        trigger=CronTrigger(hour=9, minute=0, timezone="America/Los_Angeles"),
         id='daily_notifications',
         replace_existing=True
     )

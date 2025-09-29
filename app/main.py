@@ -31,7 +31,7 @@ app.include_router(sales_router, prefix="/sales", tags=["sales"])
 app.include_router(admin_router, prefix="/admin", tags=["admin"])
 
 @app.get("/")
-async def root():
+def root():
     return {
         "message": "Hello World",
         "scheduler_running": scheduler.running if 'scheduler' in globals() else False
