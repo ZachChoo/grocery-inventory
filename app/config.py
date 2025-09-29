@@ -31,5 +31,6 @@ class Settings:
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
     FROM_EMAIL: str = os.getenv("FROM_EMAIL", "")
 
+
 # Create a single settings instance
 settings = Settings()

@@ -31,11 +31,12 @@ class NotificationService:
                 Sale.sale_end <= cutoff_date,
                 Sale.sale_end >= datetime.now().date()
             ).all()
-            return [{"sale_end": sale.sale_end,
-                    "sale_price": sale.sale_price,
-                    "product": {"name": sale.product.name}} 
-                    for sale in expiring_sales]
-    
+            return [{
+                "sale_end": sale.sale_end,
+                "sale_price": sale.sale_price,
+                "product": {"name": sale.product.name}
+            } for sale in expiring_sales]
+
     def send_notification_email(self, manager_emails: List[str], expiring_sales: List[Sale]) -> bool:
         """Send email notification about expiring sales"""
         if not manager_emails or not expiring_sales:
@@ -71,6 +72,7 @@ class NotificationService:
         
         success = self.send_notification_email(manager_emails, expiring_sales)
         return 1 if success else 0
+
 
 # Global instance
 notification_service = NotificationService()

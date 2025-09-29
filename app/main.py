@@ -35,4 +35,4 @@ def root():
     return {
         "message": "Hello World",
         "scheduler_running": scheduler.running if 'scheduler' in globals() else False
-        }
+    }

@@ -83,7 +83,6 @@ class EmailService:
             # Plain text
             body_lines.append(f'{product_name}: ${price} (ends {status})')
 
-            
             # HTML
             row_color = "#ffebee" if days_left == 0 else "#fff"
             html_lines.append(f"""
@@ -113,6 +112,7 @@ class EmailService:
         html_text = "\n".join(html_lines)
         
         return self.send_email(to_emails, subject, plain_text, html_text)
+
 
 # Global instance
 email_service = EmailService()

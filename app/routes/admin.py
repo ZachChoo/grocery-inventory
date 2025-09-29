@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
-from typing import Annotated
+from fastapi import APIRouter #, Depends
+#from typing import Annotated
 
-from app.models.user import User
+#from app.models.user import User
 from app.services.notifications import notification_service
-from app.core.security import require_role
+#from app.core.security import require_role
 
 
 router = APIRouter()

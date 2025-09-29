@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from datetime import datetime, timedelta
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from app.main import app
 
@@ -163,7 +163,6 @@ class TestEmailNotifications:
         assert len(sales_list) == 1
 
         # The sale should have product relationship loaded
-        tomorrow = datetime.now().date() + timedelta(days=1)
         sale = sales_list[0]
         assert sale["product"]["name"] == "Test Product"
         assert sale["sale_price"] == 7.99
