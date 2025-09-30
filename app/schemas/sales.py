@@ -3,7 +3,7 @@ from datetime import date
 
 # Pydantic schema for validating product creation
 class SaleCreate(BaseModel):
-    product_id: int
+    product_upc: int
     sale_price: float
     sale_start: date
     sale_end: date

@@ -74,7 +74,7 @@ def sample_sale(employee_token, sample_product):
     # Create sale ending tomorrow
     tomorrow = datetime.now().date() + timedelta(days=1)
     sale_data = {
-        "product_id": 1,
+        "product_upc": 123456,
         "sale_price": 7.99,
         "sale_start": datetime.now().date().isoformat(),
         "sale_end": tomorrow.isoformat()

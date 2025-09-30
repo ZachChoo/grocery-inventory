@@ -71,7 +71,7 @@ def manager_token():
 def sample_sale():
     """Sample sale data for testing"""
     return {
-        "product_id": 1,  # Will be updated in tests with actual product ID
+        "product_upc": 1,  # Will be updated in tests with actual product ID
         "sale_price": 15.99,
         "sale_start": str(date.today()),
         "sale_end": str(date.today() + timedelta(days=7))
@@ -126,7 +126,7 @@ class TestCreateSale:
         assert product is not None
         
         # Update sale data with real product ID
-        sample_sale["product_id"] = product["id"]
+        sample_sale["product_upc"] = product["upc"]
         
         # Create the sale
         response = client.post("/sales/", json=sample_sale, headers=headers)
@@ -139,7 +139,7 @@ class TestCreateSale:
         headers = TestHelper.auth_headers(employee_token)
         
         # Use non-existent product ID
-        sample_sale["product_id"] = 99999
+        sample_sale["product_upc"] = 99999
         
         response = client.post("/sales/", json=sample_sale, headers=headers)
         
@@ -155,7 +155,7 @@ class TestCreateSale:
         
         # Sale with end date before start date
         invalid_sale = {
-            "product_id": product["id"],
+            "product_upc": product["upc"],
             "sale_price": 15.99,
             "sale_start": str(date.today() + timedelta(days=7)),
             "sale_end": str(date.today())  # End before start!
@@ -175,7 +175,7 @@ class TestDeleteSale:
         # Manager creates product and sale
         product = TestHelper.create_test_product(manager_headers)
         sale_data = {
-            "product_id": product["id"],
+            "product_upc": product["upc"],
             "sale_price": 15.99,
             "sale_start": str(date.today()),
             "sale_end": str(date.today() + timedelta(days=7))
@@ -186,7 +186,7 @@ class TestDeleteSale:
         # Get the created sale ID
         sales_response = client.get("/sales/")
         sales = sales_response.json()["sales"]
-        test_sale = next((s for s in sales if s["product_id"] == product["id"]), None)
+        test_sale = next((s for s in sales if s["product_upc"] == product["upc"]), None)
         
         if test_sale:
             sale_id = test_sale["id"]
@@ -223,18 +223,17 @@ class TestCascadeDelete:
         # Create a product
         product = TestHelper.create_test_product(headers)
         assert product is not None
-        product_id = product["id"]
         product_upc = product["upc"]
         
         # Create multiple sales for this product
         sale_data_1 = {
-            "product_id": product_id,
+            "product_upc": product_upc,
             "sale_price": 15.99,
             "sale_start": str(date.today()),
             "sale_end": str(date.today() + timedelta(days=7))
         }
         sale_data_2 = {
-            "product_id": product_id,
+            "product_upc": product_upc,
             "sale_price": 12.99,
             "sale_start": str(date.today() + timedelta(days=8)),
             "sale_end": str(date.today() + timedelta(days=14))
@@ -269,7 +268,7 @@ class TestCascadeDelete:
         # Create product and sale
         product = TestHelper.create_test_product(headers)
         sale_data = {
-            "product_id": product["id"],
+            "product_upc": product["upc"],
             "sale_price": 15.99,
             "sale_start": str(date.today()),
             "sale_end": str(date.today() + timedelta(days=7))
@@ -280,7 +279,7 @@ class TestCascadeDelete:
         
         # Get the sale ID
         sales = client.get("/sales/").json()["sales"]
-        test_sale = next(s for s in sales if s["product_id"] == product["id"])
+        test_sale = next(s for s in sales if s["product_upc"] == product["upc"])
         
         # Delete the sale
         delete_response = client.delete(f"/sales/{test_sale['id']}", headers=headers)
