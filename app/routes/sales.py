@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Annotated
+from sqlalchemy.orm import joinedload
 
 from app.models.sale import Sale
 from app.schemas.sales import SaleCreate
@@ -17,7 +18,7 @@ def get_sales(page: int = 1, size: int = settings.DEFAULT_PAGE_SIZE):
         size = settings.MAX_PAGE_SIZE
     with SessionLocal() as session:
         skip = (page - 1) * size
-        sales = session.query(Sale).offset(skip).limit(size).all()
+        sales = session.query(Sale).options(joinedload(Sale.product)).offset(skip).limit(size).all()
         return {
             "sales": sales,
             "page": page,
